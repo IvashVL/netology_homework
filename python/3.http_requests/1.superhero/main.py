@@ -9,6 +9,6 @@ response = [hero for hero in requests.get(url + urn).json() if hero['name'] in h
 
 max_intelligence = max(hero['powerstats']['intelligence'] for hero in response)
 
-res = [hero['name'] for hero in response if hero['powerstats']['intelligence'] == max_intelligence]
+max_intelligence_hero = [hero['name'] for hero in response if hero['powerstats']['intelligence'] == max_intelligence]
 
-print(res[0])
+print(max_intelligence_hero[0])
