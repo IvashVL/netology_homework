@@ -6,6 +6,9 @@ from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
+"""Решение задания 1 
+Ниже представлена реализация классов Publisher, Book, Shop, Stock, Sale 
+"""
 
 class Publisher(Base):
     __tablename__ = 'publisher'
@@ -59,29 +62,44 @@ def create_tables(engine):
 
 
 def load_data(session, file):
+
+    """Решение задания 3
+    Функция load_data() загружает данные из json-файла в БД
+    Закоментирован мой вариант решения т.к. ответ предложенный в самом задании более лаконичен
+    """
+
     with open(file, encoding='utf-8') as f:
         data = json.load(f)
-    for item in data:
-        if item['model'] == 'publisher':
-            publisher = Publisher(name=item['fields']['name'])
-            session.add(publisher)
-        elif item['model'] == 'book':
-            book = Book(title=item['fields']['title'], id_publisher=int(item['fields']['id_publisher']))
-            session.add(book)
-        elif item['model'] == 'shop':
-            shop = Shop(name=item['fields']['name'])
-            session.add(shop)
-        elif item['model'] == 'stock':
-            stock = Stock(id_book=int(item['fields']['id_book']),
-                          id_shop=int(item['fields']['id_shop']),
-                          count=int(item['fields']['count']))
-            session.add(stock)
-        elif item['model'] == 'sale':
-            sale = Sale(price=float(item['fields']['price']),
-                        date_sale=item['fields']['date_sale'],
-                        id_stock=int(item['fields']['id_stock']),
-                        count=int(item['fields']['count']))
-            session.add(sale)
+    for record in data:
+        # if item['model'] == 'publisher':
+        #     publisher = Publisher(name=item['fields']['name'])
+        #     session.add(publisher)
+        # elif item['model'] == 'book':
+        #     book = Book(title=item['fields']['title'], id_publisher=int(item['fields']['id_publisher']))
+        #     session.add(book)
+        # elif item['model'] == 'shop':
+        #     shop = Shop(name=item['fields']['name'])
+        #     session.add(shop)
+        # elif item['model'] == 'stock':
+        #     stock = Stock(id_book=int(item['fields']['id_book']),
+        #                   id_shop=int(item['fields']['id_shop']),
+        #                   count=int(item['fields']['count']))
+        #     session.add(stock)
+        # elif item['model'] == 'sale':
+        #     sale = Sale(price=float(item['fields']['price']),
+        #                 date_sale=item['fields']['date_sale'],
+        #                 id_stock=int(item['fields']['id_stock']),
+        #                 count=int(item['fields']['count']))
+        #     session.add(sale)
+
+        model = {
+            'publisher': Publisher,
+            'shop': Shop,
+            'book': Book,
+            'stock': Stock,
+            'sale': Sale,
+        }[record.get('model')]
+        session.add(model(id=record.get('pk'), **record.get('fields')))
     session.commit()
 
 

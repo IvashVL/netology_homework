@@ -5,7 +5,12 @@ import os
 from dotenv import load_dotenv
 
 
-def find_book_by_publisher(s, id_publisher=None, name=None):
+def find_stock_by_publisher(s, id_publisher=None, name=None):
+    """Решение задания 2
+    Функция find_stock_by_publisher() выводит на экран магазины продающие книги заданного в
+    параметрах функции издания. Издание задается по id или по имени.
+    """
+
     query = s.query(Book.title, Shop.name, Sale.price, Sale.date_sale)
     query = query.join(Stock, Stock.id == Sale.id_stock)
     query = query.join(Shop, Shop.id == Stock.id_shop)
@@ -40,7 +45,7 @@ if __name__ == '__main__':
 
     load_data(session, 'data.json')
 
-    find_book_by_publisher(session, id_publisher=int(input('Введите id издателя: ')))
-    find_book_by_publisher(session, name=input('Введите имя издателя: '))
+    find_stock_by_publisher(session, id_publisher=int(input('Введите id издателя: ')))
+    find_stock_by_publisher(session, name=input('Введите имя издателя: '))
 
     session.close()
