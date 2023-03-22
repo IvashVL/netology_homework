@@ -19,6 +19,22 @@ JOIN album_artist ON album_artist.artist_id = artist.artist_id
 JOIN album ON album.album_id = album_artist.album_id
 WHERE year != 2020;
 
+--Только обращаю внимание, что ваша реализация 4 запроса отвечает 
+--на вопрос “кто выпустил хоть что-то, кроме того, что выпустил в 2020”, 
+--а не на вопрос: “кто не выпустил альбомы в 2020 году”. Чтобы решить 
+--поставленную задачу нужно сначала найти тех исполнителей, кто выпустил 
+--альбом в 2020 (вложенным запросом), а потом их исключить из общего списка 
+--исполнителей. Тут оптимальнее было вот так (названия полей и таблиц мои, 
+--но суть не меняется):
+--SELECT DISTINCT a.name FROM artist a 
+--	WHERE a.name NOT IN (
+--		SELECT DISTINCT a.name FROM artist a 
+--		LEFT JOIN artist_album aa ON a.artist_id = aa.artist_id
+--		LEFT JOIN album al ON al.album_id = aa.album_id 
+--		WHERE al.year_of_issue = 2020
+--		)
+--	ORDER BY a.name;
+
 -- 5. названия сборников, в которых присутствует конкретный исполнитель (выберите сами);
 SELECT collection_name FROM collection
 JOIN collection_track ON collection_track.collection_id = collection.collection_id
@@ -34,6 +50,16 @@ JOIN album_artist ON album_artist.album_id = album.album_id
 JOIN (SELECT artist_id FROM artist_genre
 	  GROUP BY artist_id 
 	  HAVING COUNT(*) > 1) AS genre_count ON genre_count.artist_id =  album_artist.artist_id;
+
+--А в 6 запросе вложенная часть совсем не нужна, т.к. вы после всех объединений можете 
+--сгруппировать результат по альбомам и сделать отбор при помощи HAVING:	 
+--SELECT Album.Title FROM GenreArtist
+--JOIN Genre ON GenreArtist.GenreId = Genre.Id
+--JOIN Artist ON GenreArtist.ArtistId = Artist.Id
+--JOIN ArtistAlbum ON ArtistAlbum.ArtistId = Artist.Id
+--JOIN Album ON ArtistAlbum.AlbumId = Album.Id
+--GROUP BY Album.Title
+--HAVING COUNT(DISTINCT Genre.Name) > 1;
 
 -- 7. наименование треков, которые не входят в сборники;
 SELECT track_name FROM track
@@ -54,3 +80,14 @@ WHERE album_id IN (SELECT album_id FROM track
 				   GROUP BY album_id 
 				   HAVING COUNT(*) = (SELECT MIN(q.count) FROM (SELECT album_id, COUNT(*) FROM track 
 																GROUP BY album_id) AS q));
+
+--И в последнем запросе можно было обойтись одним уровнем вложенности:															
+--SELECT album.title, COUNT(track.title) track_count FROM album 
+--JOIN track ON album.album_id = track.album_id
+--GROUP BY album.album_id
+--HAVING COUNT(track.title) = (  
+--	SELECT COUNT(track.title) FROM album
+--	JOIN track ON album.album_id = track.album_id
+--	GROUP BY album.album_id
+--	ORDER BY COUNT(track.title)
+--	LIMIT 1);
