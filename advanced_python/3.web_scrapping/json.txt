@@ -1,0 +1,26 @@
+[
+    {
+        "Junior Python Backend Developer": {
+            "href": "https://spb.hh.ru/vacancy/77236116?from=vacancy_search_list&query=python",
+            "salary": "до 60 000 руб. на руки",
+            "company": "ООО АпТрейдер (UpTrader)",
+            "city": "Санкт-Петербург"
+        }
+    },
+    {
+        "Python-разработчик (Django, DRF)": {
+            "href": "https://spb.hh.ru/vacancy/70705466?from=vacancy_search_list&query=python",
+            "salary": "от 60 000 до 220 000 руб. на руки",
+            "company": "ООО Фабрика Решений",
+            "city": "Москва"
+        }
+    },
+    {
+        "Backend Developer на Python": {
+            "href": "https://spb.hh.ru/vacancy/78090926?from=vacancy_search_list&query=python",
+            "salary": "от 150 000 руб. до вычета налогов",
+            "company": "Creative",
+            "city": "Санкт-Петербург"
+        }
+    }
+]
