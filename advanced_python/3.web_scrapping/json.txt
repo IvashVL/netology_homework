@@ -1,7 +1,15 @@
 [
     {
+        "Преподаватель программирования Python в онлайн-школу для детей (удаленно)": {
+            "link": "https://adsrv.hh.ru/click?b=381478&c=6&meta=qWyBFDQJowSrCmMvVwOP09HNRUTTU0FA2ZbZV-KbcAd0SesJOIYhpe9X3UwewjpqvGKPy77krqVUrJ8DAH3XGdiyR7mqu4LTVerC1Bfd29nZG65Xc07eZnxoW9XbJIWIEo--2pQXTFh8ROnSJkLEEqYfey204idfF9rl95rpLa8vZRohBeC20KacWoX2hRsS-nd0Eikkh2KldHnIGH6eVg%3D%3D&place=35&clickType=link_to_vacancy",
+            "salary": "от 25 000 до 60 000 руб. на руки",
+            "company": "Компьютерная школа IT-Compot",
+            "city": "Москва"
+        }
+    },
+    {
         "Junior Python Backend Developer": {
-            "href": "https://spb.hh.ru/vacancy/77236116?from=vacancy_search_list&query=python",
+            "link": "https://spb.hh.ru/vacancy/77236116?from=vacancy_search_list&query=python",
             "salary": "до 60 000 руб. на руки",
             "company": "ООО АпТрейдер (UpTrader)",
             "city": "Санкт-Петербург"
@@ -9,7 +17,7 @@
     },
     {
         "Python-разработчик (Django, DRF)": {
-            "href": "https://spb.hh.ru/vacancy/70705466?from=vacancy_search_list&query=python",
+            "link": "https://spb.hh.ru/vacancy/70705466?from=vacancy_search_list&query=python",
             "salary": "от 60 000 до 220 000 руб. на руки",
             "company": "ООО Фабрика Решений",
             "city": "Москва"
@@ -17,7 +25,7 @@
     },
     {
         "Backend Developer на Python": {
-            "href": "https://spb.hh.ru/vacancy/78090926?from=vacancy_search_list&query=python",
+            "link": "https://spb.hh.ru/vacancy/78090926?from=vacancy_search_list&query=python",
             "salary": "от 150 000 руб. до вычета налогов",
             "company": "Creative",
             "city": "Санкт-Петербург"

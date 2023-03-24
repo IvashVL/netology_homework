@@ -6,15 +6,7 @@ from fake_headers import Headers
 
 URL = 'https://spb.hh.ru/search/vacancy?text=python&area=1&area=2'
 headers = Headers(browser='firefox', os='windows', headers=True).generate()
-sought_keywords = ('Django', 'Flask')
-
-
-def get_title(tag):
-    return tag.find('a', {'data-qa': 'serp-item__title'}).text
-
-
-def get_link(tag):
-    return tag.find('a', {'data-qa': 'serp-item__title'})['href']
+sought_keywords = {'django', 'flask'}
 
 
 def get_city(tag):
@@ -23,11 +15,11 @@ def get_city(tag):
     return city_pattern.search(vacancy_view_raw_address).group(0)
 
 
-def get_key_skills(ad_htm):
+def get_skills_words(ad_htm):
     """
         В ключевых навыках может быть указано, например, "Framework Django" для того, чтобы не пропустить такие
         вакансии разобъем все ключевые навыки на отдельные слова. Для того чтобы исключить дублирование слов
-        преобразуем в множество.
+        преобразуем в множество. Или же можно добавить "Framework Django" в множество искомых ключевых навыков.
         """
     skills = BeautifulSoup(ad_htm.text, 'lxml').findAll('span', {'data-qa': 'bloko-tag__text'})
     return set(sum(list(map(str.split, (s.text.strip().lower() for s in skills))), []))
@@ -41,10 +33,6 @@ def get_company(ad_htm):
     return BeautifulSoup(ad_htm.text, 'lxml').find('a', {'data-qa': 'vacancy-company-name'}).text
 
 
-def skills_is_found(needles, heystack):
-    return any(list(map(lambda x: x.lower() in heystack, needles)))
-
-
 def save_to_json(data):
     with open('json.txt', 'w') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
@@ -55,12 +43,13 @@ vacancy_bodies = BeautifulSoup(html.text, 'lxml').findAll('div', class_='vacancy
 
 vacancies_list = []
 for body in vacancy_bodies:
-    ad_html = requests.get(get_link(body), headers=headers)
-    skill_words = get_key_skills(ad_html)
-    if skills_is_found(needles=sought_keywords, heystack=skill_words):
-        vacancy_dict = {get_title(body): {'href': get_link(body),
-                                          'salary': get_salary(ad_html),
-                                          'company': get_company(ad_html),
-                                          'city': get_city(body)}}
+    title = body.find('a', {'data-qa': 'serp-item__title'})
+    link = title['href']
+    ad_html = requests.get(link, headers=headers)
+    if sought_keywords & get_skills_words(ad_html):
+        vacancy_dict = {title.text: {'link': link,
+                                     'salary': get_salary(ad_html),
+                                     'company': get_company(ad_html),
+                                     'city': get_city(body)}}
         vacancies_list.append(vacancy_dict)
 save_to_json(vacancies_list)
