@@ -22,7 +22,7 @@ def task_4(stats):
 
 class YaFolder:
     def __init__(self, folder_name):
-        self.token = 'y0_AgAEA7qiNyBMAADLWwAAAADgANSMy6vDlXprR8ing8lQdRb7zHYq1UE'
+        self.token = ...
         self.url = 'https://cloud-api.yandex.net'
         self.urn_create_folder = '/v1/disk/resources'
         self.headers = {'Accept': 'application/json',
